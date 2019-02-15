@@ -4,24 +4,40 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  template: `
-  <ul>
-    <li *ngFor="let item of items | async">
-      {{ item.name }}
-    </li>
-  </ul>
-  <button (click)="addDocument()">Add</button>
-  `
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  items: Observable<any[]>;
+
+  private imageSrc: string = '';
+  imageName: string ='';
+
+  handleInputChange(e) {
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+    
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+  _handleReaderLoaded(e) {
+    let reader = e.target;
+    this.imageSrc = reader.result;
+    console.log(this.imageSrc)
+  }
+  imageSrcs: Observable<any[]>;
   constructor(private db: AngularFirestore) {
-    this.items = db.collection('items').valueChanges();
-    console.log(this.items, db.collection('items').valueChanges());
+    this.imageSrcs = db.collection('images').valueChanges();
+    console.log(this.imageSrcs, db.collection('images').valueChanges());
   }
 
   addDocument() {
-    const items = this.db.collection('items');
-    items.add({ name: 'item'});
+    const imageSrcs = this.db.collection('images');
+    imageSrcs.add({ name: this.imageSrc });
   }
 }
