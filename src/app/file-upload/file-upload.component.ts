@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
 import { AngularFirestore } from '@angular/fire/firestore';
+
 
 @Component({
   selector: 'app-file-upload',
@@ -14,59 +15,39 @@ export class FileUploadComponent implements OnInit {
   ngOnInit() {
   }
 
-  // // Main task 
-  // task: AngularFireUploadTask;
+  private imageSrc: string = '';
+  imageName: string ='';
+  @Output() imageSrcsEvent = new EventEmitter<Observable<any[]>>() ;
 
-  // // Progress monitoring
-  // percentage: Observable<number>;
+  handleInputChange(e) {
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    
+    if (!file.type.match(pattern)) {
+      alert('invalid format');
+      return;
+    }
+    
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+  }
+  _handleReaderLoaded(e) {
+    let reader = e.target;
+    this.imageSrc = reader.result;
+    console.log(this.imageSrc)
+  }
+  imageSrcs: Observable<any[]>;
+  constructor(private db: AngularFirestore) {
+    this.imageSrcs = db.collection('images').valueChanges();
+    console.log(this.imageSrcs, db.collection('images').valueChanges());
+  }
 
-  // snapshot: Observable<any>;
-
-  // // Download URL
-  // downloadURL: Observable<string>;
-
-  // // State for dropzone CSS toggling
-  // isHovering: boolean;
-
-  // constructor(private storage: AngularFireStorage, private db: AngularFirestore) { }
-
+  addDocument() {
+    const imageSrcs = this.db.collection('images');
+    imageSrcs.add({ name: this.imageSrc });
+    this.imageSrcsEvent.emit(this.imageSrcs);
+  }
   
-  // toggleHover(event: boolean) {
-  //   this.isHovering = event;
-  // }
-
-
-  // startUpload(event: FileList) {
-  //   // The File object
-  //   const file = event.item(0)
-
-  //   // Client-side validation example
-  //   if (file.type.split('/')[0] !== 'image') { 
-  //     console.error('unsupported file type :( ')
-  //     return;
-  //   }
-
-  //   // The storage path
-  //   const path = `test/${new Date().getTime()}_${file.name}`;
-
-  //   // Totally optional metadata
-  //   const customMetadata = { app: 'My AngularFire-powered PWA!' };
-
-  //   // The main task
-  //   this.task = this.storage.upload(path, file, { customMetadata })
-
-  //   // Progress monitoring
-  //   this.percentage = this.task.percentageChanges();
-  //   this.snapshot   = this.task.snapshotChanges()
-
-  //   // The file's download URL
-  //   this.downloadURL = this.task.downloadURL(); 
-  // }
-
-  // // Determines if the upload task is active
-  // isActive(snapshot) {
-  //   return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes
-  // }
-
 
 }
