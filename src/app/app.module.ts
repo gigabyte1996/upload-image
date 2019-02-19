@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms'
 
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
@@ -12,12 +13,13 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { DropZoneDirective } from './drop-zone.directive';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ShowImageComponent } from './show-image/show-image.component';
+import { NgbModule, NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     AppComponent,
     DropZoneDirective,
     FileUploadComponent,
-    ShowImageComponent
+    ShowImageComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,6 +28,8 @@ import { ShowImageComponent } from './show-image/show-image.component';
     AngularFirestoreModule, 
     AngularFireAuthModule,
     AngularFireStorageModule,
+    FormsModule,
+    NgbModule
   ],
   providers: [
   ],

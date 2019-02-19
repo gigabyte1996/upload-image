@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ImageSrc } from './shared/imageSrc.model';
 
 
 @Component({
@@ -8,11 +9,5 @@ import { Observable } from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  // @Input() imageSrc: string[];
-  constructor(){}
-  // imageSrcs: Observable<any[]>;
-  // recievedData($event){
-  //   this.imageSrcs = $event;
-  // }
-  
+  constructor(){};
 }

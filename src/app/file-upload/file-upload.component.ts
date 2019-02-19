@@ -1,7 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map,  } from 'rxjs/operators';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ImageSrc } from '../shared/imageSrc.model';
+import { ImagesService } from '../images.service';
 
 
 @Component({
@@ -11,13 +13,27 @@ import { ImageSrc } from '../shared/imageSrc.model';
 })
 export class FileUploadComponent implements OnInit {
 
-
+  itemsCollection: AngularFirestoreCollection<ImageSrc>;
+  imageSrcs: any;
+  imageSrc: string = '';
+  imageName: string ='';
   ngOnInit() {
   }
 
-  private imageSrc: string = '';
-  imageName: string ='';
-  // @Output() imageSrcsEvent = new EventEmitter<Observable<any[]>>() ;
+  constructor(
+    private db: AngularFirestore,
+    private data: ImagesService
+  ) {
+    this.itemsCollection = db.collection<ImageSrc>('images');
+    this.imageSrcs = this.itemsCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const data = a.payload.doc.data() as ImageSrc;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      }))
+    );
+    this.imageSrcs.subscribe(elm => this.data.changeMessage(elm));
+  }
 
   handleInputChange(e) {
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
@@ -32,29 +48,14 @@ export class FileUploadComponent implements OnInit {
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
   }
+
   _handleReaderLoaded(e) {
     let reader = e.target;
     this.imageSrc = reader.result;
-    console.log(this.imageSrc)
   }
-  // private itemsCollection: AngularFirestoreCollection<ImageSrc>;
-  // imageSrcs: Observable<ImageSrc[]>;
-  // constructor(private db: AngularFirestore) {
-  //   this.itemsCollection = db.collection<ImageSrc>('images').valueChanges();
-  //   console.log(this.imageSrcs, db.collection('images').valueChanges());
-  // }
-  private itemsCollection: AngularFirestoreCollection<ImageSrc>;
-  imageSrcs: Observable<ImageSrc[]>;
-  constructor(private db: AngularFirestore) {
-    this.itemsCollection = db.collection<ImageSrc>('images');
-    this.imageSrcs = this.itemsCollection.valueChanges();
-  }
+
   addDocument() {
     const imageSrcs = this.db.collection('images');
     imageSrcs.add({ name: this.imageSrc });
   }
-
-
-  
-
 }
