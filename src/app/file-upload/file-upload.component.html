@@ -1,7 +1,7 @@
 <div class="image-upload">
   <ul>
       <li *ngFor="let imageSrc of imageSrcs | async">
-        {{ imageSrc.name }}
+        <img src="{{ imageSrc.name }}" alt="">
       </li>
     </ul>
 <img [src]="imageSrc" style="max-width:300px;max-height:300px"/>

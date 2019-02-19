@@ -25,7 +25,7 @@ import { ShowImageComponent } from './show-image/show-image.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule, 
     AngularFireAuthModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
   ],
   providers: [
   ],
