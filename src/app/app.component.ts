@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ImageSrc } from './shared/imageSrc.model';
+
 
 
 @Component({

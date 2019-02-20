@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ImagesService } from '../images.service';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClient } from 'selenium-webdriver/http';
 
 @Component({
   selector: 'app-show-image',
@@ -20,7 +19,6 @@ export class ShowImageComponent implements OnInit {
     config.keyboard = false;
     config.pauseOnHover = false;
   }
-  images = [1, 2, 3, 4].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
   
   imageData
 

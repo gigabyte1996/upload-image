@@ -4,7 +4,35 @@
       <img src="{{ imageSrc.name }}" alt="">
     </li>
   </ul> -->
-<img [src]="imageSrc" style="max-width:300px;max-height:300px"/>
+  <div class="dropzone" 
+  dropZone
+  (hovered)="toggleHover($event)"
+  (dropped)="startUpload($event)"
+  [class.hovering]="isHovering">
+
+
+
+  <h3>AngularFire Drop Zone</h3>
+
+  <div class="file">
+     <label class="file-label">
+
+
+        <input name="imageUrl" type="file" accept="image/*" (change)="handleInputChange($event)" />
+
+
+       <span class="file-cta">
+         <span class="file-icon">
+           <i class="fa fa-upload"></i>
+         </span>
+         <span class="file-label">
+           or choose a file…
+         </span>
+       </span>
+     </label>
+   </div>
+</div>
+<!-- <img [src]="imageSrc" style="max-width:300px;max-height:300px"/>
 <input name="imageUrl" type="file" accept="image/*" (change)="handleInputChange($event)" />
-<button (click)="addDocument()">Add</button>
+<button (click)="addDocument()">Add</button> -->
 </div> 

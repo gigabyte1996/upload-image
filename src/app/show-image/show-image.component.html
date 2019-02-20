@@ -1,15 +1,14 @@
-  <!-- <ul>
+<!-- <ul>
     <li *ngFor="let img of imageData">
       <img src="{{ img.name }}" alt="">
     </li>
   </ul> -->
-
-  <ngb-carousel *ngIf="images">
-    <ng-template ngbSlide *ngFor="let img of imageData">
-      <img src="{{ img.name }}" alt="" style="max-width:900px;max-height:500px">
-      <!-- <div class="carousel-caption">
-        <h3>10 seconds between slides...</h3>
-        <p>This carousel uses customized default values.</p>
-      </div> -->
-    </ng-template>
-  </ngb-carousel>
+<div class="col-md-2"></div>
+<div class="col-md-8">
+    <ngb-carousel>
+        <ng-template ngbSlide *ngFor="let img of imageData">
+            <img src="{{ img.name }}" alt="" style="max-height:600px;width:100%">
+        </ng-template>
+    </ngb-carousel>
+</div>
+<div class="col-md-2"></div>
